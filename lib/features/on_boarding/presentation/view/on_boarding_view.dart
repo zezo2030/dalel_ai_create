@@ -47,7 +47,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   });
                 },
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 60),
               if (!isLastPage)
                 CustomButton(
                   text: AppStrings.next,

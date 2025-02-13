@@ -5,7 +5,6 @@ import 'package:dalel_ai/features/on_boarding/presentation/widgets/on_boarding_t
 import 'package:dalel_ai/features/on_boarding/presentation/widgets/smooth_page_indicator.dart';
 import 'package:flutter/material.dart';
 
-
 class OnBoardingWidgetBody extends StatefulWidget {
   final Function(int) onPageChanged;
   final PageController controller;
@@ -21,11 +20,10 @@ class OnBoardingWidgetBody extends StatefulWidget {
 }
 
 class _OnboardingWidgetBodyState extends State<OnBoardingWidgetBody> {
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.6,
+      height: 500,
       child: PageView.builder(
         controller: widget.controller,
         itemCount: onBoardingList.length,
