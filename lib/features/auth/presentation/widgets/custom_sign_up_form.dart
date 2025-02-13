@@ -4,11 +4,11 @@ import 'package:dalel_ai/features/auth/presentation/auth_cubit/cubit/auth_cubit.
 import 'package:dalel_ai/features/auth/presentation/auth_cubit/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_text_style.dart';
 import 'terms_and_condition.dart';
 
 class CustomSignUpForm extends StatelessWidget {
@@ -21,11 +21,24 @@ class CustomSignUpForm extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is SignUpSuccess) {
-          // AppRouter.router.push("/home");
+          Fluttertoast.showToast(
+              msg: "the account create successfully",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          AppRouter.router.pushReplacement("/home");
         } else if (state is SignUpError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
-          );
+          Fluttertoast.showToast(
+              msg: state.errorMessage,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
         }
       },
       builder: (context, state) {
@@ -81,6 +94,7 @@ class CustomSignUpForm extends StatelessWidget {
                           ? () {
                               if (_formKey.currentState!.validate()) {
                                 authCubit.signUpWithEmailAndPassword();
+                                _formKey.currentState!.reset();
                               }
                             }
                           : null,

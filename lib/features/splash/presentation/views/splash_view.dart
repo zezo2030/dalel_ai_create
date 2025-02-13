@@ -1,9 +1,11 @@
+import 'package:dalel_ai/core/router/app_router.dart';
 import 'package:dalel_ai/core/utils/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/database/cache/cache_helper.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../../../core/utils/app_strings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -29,10 +31,14 @@ class _SplashViewState extends State<SplashView> {
         ) ??
         false;
 
-    if (hasSeenOnboarding) {
-      context.go('/signup');
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (!hasSeenOnboarding) {
+      AppRouter.router.pushReplacement('/onboarding');
+    } else if (user != null) {
+      AppRouter.router.pushReplacement('/home');
     } else {
-      context.go('/onboarding');
+      AppRouter.router.pushReplacement('/signIn');
     }
   }
 
