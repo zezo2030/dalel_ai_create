@@ -19,7 +19,7 @@ abstract class AppStrings {
       signUp = "Sign Up",
       signIn = "Sign In",
       alreadyHaveAnAccount = "Already have an account ? ",
-      dontHaveAnAccount = "Don’t have an account ? ",
+      dontHaveAnAccount = "Don't have an account ? ",
       forgotPassword = "Forgot Password ?",
       //!Home Strings
       recommendations = "Recommendations",
@@ -67,7 +67,8 @@ abstract class AppStrings {
       resendCode = "Resend Code",
       verifyAccount = "Verify Account",
       enter4DigitCodeWeHaveSentTo = "Enter 4 digit code we have sent to ",
-      haventReceivedVerificationCode = "Haven’t received verification code?";
+      haventReceivedVerificationCode = "Haven't received verification code?",
+      onboardingVisited = 'onboarding_visited';
 }
 
 abstract class FireBaseStrings {
