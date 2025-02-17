@@ -15,10 +15,14 @@ class AuthCubit extends Cubit<AuthState> {
   signUpWithEmailAndPassword() async {
     try {
       emit(SignUpLoading());
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );
+
+      await userCredential.user?.sendEmailVerification();
+      signOut();
       emit(SignUpSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -43,6 +47,13 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailAddress!,
         password: password!,
       );
+
+      if (!credential.user!.emailVerified) {
+        emit(SignInError('Please verify your email before logging in.'));
+        signOut();
+        return;
+      }
+
       emit(SignInSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -57,5 +68,21 @@ class AuthCubit extends Cubit<AuthState> {
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  resetPassword(String email) async {
+    try {
+      emit(ResetPasswordLoading());
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      emit(ResetPasswordSuccess());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        emit(ResetPasswordError('No user found for that email.'));
+      } else {
+        emit(ResetPasswordError(e.message ?? 'An error occurred'));
+      }
+    } catch (e) {
+      emit(ResetPasswordError(e.toString()));
+    }
   }
 }

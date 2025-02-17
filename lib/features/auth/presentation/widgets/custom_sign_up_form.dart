@@ -22,14 +22,15 @@ class CustomSignUpForm extends StatelessWidget {
       listener: (context, state) {
         if (state is SignUpSuccess) {
           Fluttertoast.showToast(
-              msg: "the account create successfully",
-              toastLength: Toast.LENGTH_SHORT,
+              msg:
+                  "Account created successfully. Please check your email for verification.",
+              toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.green,
               textColor: Colors.white,
               fontSize: 16.0);
-          AppRouter.router.pushReplacement("/home");
+          AppRouter.router.pushReplacement("/signIn");
         } else if (state is SignUpError) {
           Fluttertoast.showToast(
               msg: state.errorMessage,

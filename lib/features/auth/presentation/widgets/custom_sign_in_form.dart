@@ -1,8 +1,10 @@
+import 'package:dalel_ai/core/router/app_router.dart';
 import 'package:dalel_ai/core/widgets/custom_btn.dart';
 import 'package:dalel_ai/features/auth/presentation/auth_cubit/cubit/auth_cubit.dart';
 import 'package:dalel_ai/features/auth/presentation/auth_cubit/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -18,7 +20,19 @@ class CustomSignInForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is SignInSuccess) {
+          AppRouter.router.pushReplacement("/home");
+        } else if (state is SignInError) {
+          Fluttertoast.showToast(
+            msg: state.errorMessage,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
       },
       builder: (context, state) {
         AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
@@ -61,14 +75,20 @@ class CustomSignInForm extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 60),
-              CustomButton(
-                text: AppStrings.signIn,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    authCubit.signInWithEmailAndPassword();
-                  }
-                },
-              ),
+              state is SignInLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      ),
+                    )
+                  : CustomButton(
+                      text: AppStrings.signIn,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          authCubit.signInWithEmailAndPassword();
+                        }
+                      },
+                    ),
               const SizedBox(height: 16),
             ],
           ),

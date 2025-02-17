@@ -1,7 +1,6 @@
 import 'package:dalel_ai/core/router/app_router.dart';
 import 'package:dalel_ai/core/utils/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/database/cache/cache_helper.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../../../core/utils/app_strings.dart';
