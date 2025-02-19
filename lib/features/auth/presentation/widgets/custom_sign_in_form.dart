@@ -10,6 +10,7 @@ import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_style.dart';
+import '../../../../core/utils/app_toast.dart';
 
 class CustomSignInForm extends StatelessWidget {
   CustomSignInForm({super.key});
@@ -23,15 +24,7 @@ class CustomSignInForm extends StatelessWidget {
         if (state is SignInSuccess) {
           AppRouter.router.pushReplacement("/home");
         } else if (state is SignInError) {
-          Fluttertoast.showToast(
-            msg: state.errorMessage,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          AppToast.showErrorToast(state.errorMessage);
         }
       },
       builder: (context, state) {
@@ -62,8 +55,8 @@ class CustomSignInForm extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: TextButton(
                   onPressed: () {
-                    // TODO: Implement forgot password functionality
-                    authCubit.signOut();
+                    AppRouter.router.pushReplacement("/resetpassword");
+                    _formKey.currentState!.reset();
                   },
                   child: Text(
                     AppStrings.forgotPassword,

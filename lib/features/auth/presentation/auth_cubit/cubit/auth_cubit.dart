@@ -9,6 +9,7 @@ class AuthCubit extends Cubit<AuthState> {
   String? password;
   String? firstName;
   String? lastName;
+  String? emailResetPassword;
 
   bool termsAccepted = false;
 
@@ -70,10 +71,11 @@ class AuthCubit extends Cubit<AuthState> {
     await FirebaseAuth.instance.signOut();
   }
 
-  resetPassword(String email) async {
+  resetPassword() async {
     try {
       emit(ResetPasswordLoading());
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailResetPassword!);
       emit(ResetPasswordSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

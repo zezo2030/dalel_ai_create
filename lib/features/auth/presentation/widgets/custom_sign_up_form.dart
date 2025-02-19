@@ -10,6 +10,7 @@ import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_colors.dart';
 import 'terms_and_condition.dart';
+import '../../../../core/utils/app_toast.dart';
 
 class CustomSignUpForm extends StatelessWidget {
   CustomSignUpForm({super.key});
@@ -21,25 +22,12 @@ class CustomSignUpForm extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is SignUpSuccess) {
-          Fluttertoast.showToast(
-              msg:
-                  "Account created successfully. Please check your email for verification.",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          AppToast.showSuccessToast(
+            "Account created successfully. Please check your email for verification.",
+          );
           AppRouter.router.pushReplacement("/signIn");
         } else if (state is SignUpError) {
-          Fluttertoast.showToast(
-              msg: state.errorMessage,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          AppToast.showErrorToast(state.errorMessage);
         }
       },
       builder: (context, state) {
